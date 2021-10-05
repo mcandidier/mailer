@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'drf_registration',
+    'corsheaders',
 
     # internal apps
     'message.apps.MessageConfig',
@@ -55,6 +56,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'quickchat.urls'
@@ -149,6 +151,9 @@ AUTHENTICATION_BACKENDS = [
     'drf_registration.auth.MultiFieldsModelBackend',
 ]
 
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+]
 # Default Email configurations
 # EMAIL_HOST = 'smtp.mailserver.com'
 # EMAIL_PORT = 587
