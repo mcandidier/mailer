@@ -17,6 +17,12 @@ export const handleLogout = () => {
     }
 }
 
+export const handleResetPassword = (data) => {
+    return (dispatch) => {
+        return API.post('accounts/reset-password/', data);
+    }
+}
+
 export const getUserProfile = () => {
     return (dispatch) => {
         return API.get('accounts/profile/').then( resp => {

@@ -155,13 +155,18 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
 ]
 # Default Email configurations
-# EMAIL_HOST = 'smtp.mailserver.com'
-# EMAIL_PORT = 587
-# EMAIL_HOST_USER = 'username'
-# EMAIL_HOST_PASSWORD = 'hostpassword'
-# EMAIL_USE_TLS = True
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
+
 
 # # Default from email
 # DEFAULT_FROM_EMAIL = 'info@testingdomain.com'
 
-
+try:
+    from .local_settings import * 
+except ImportError:
+    pass
