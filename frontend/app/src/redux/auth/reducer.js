@@ -8,7 +8,6 @@ const INITIAL_STATE = {
 export function user(state=INITIAL_STATE, action) {
     switch(action.type) {
         case 'LOGIN':
-            console.log(action, 'action');
             localStorage.setItem('access-token', action.payload.token);
             return {
                 loggedIn: true,
@@ -17,6 +16,11 @@ export function user(state=INITIAL_STATE, action) {
         case 'LOGOUT':
             localStorage.removeItem('access-token');
             return {}
+        case 'GET_PROFILE':
+            return {
+                loggedIn: true,
+                user: action.payload
+            }
         default:
             return state;
     }

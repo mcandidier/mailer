@@ -16,3 +16,12 @@ export const handleLogout = () => {
         dispatch({type: 'LOGOUT'});
     }
 }
+
+export const getUserProfile = () => {
+    return (dispatch) => {
+        return API.get('accounts/profile/').then( resp => {
+            const { data } = resp;
+            dispatch({type: 'GET_PROFILE', payload: data});
+        });
+    }
+}

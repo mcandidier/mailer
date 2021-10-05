@@ -12,7 +12,7 @@ const Nav = props => {
 
     return (
         <div>
-            {user.loggedIn ? `hello ${user.user.username}` : 'login'}
+            {user.loggedIn ? `hello ${user.user?.username}` : 'login'}
             {user.loggedIn ?
             <div  onClick={ () => logout() }>logout</div>
             : ''}

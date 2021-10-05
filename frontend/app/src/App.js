@@ -1,5 +1,10 @@
 
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
+
+import { getUserProfile } from './redux/auth/actions';
+
+
 import {
   SignIn,
   Inbox,
@@ -9,9 +14,12 @@ import {
 import './App.css';
 
 
-function App() {
-  const user = useSelector(state => state.user.user);
+function App(props) {
+  // const user = useSelector(state => state.user.user);
+  const {user} = props;
+
   console.log(user, 'user');
+
   return (
     <div className="App">
       <Nav></Nav>
@@ -21,4 +29,17 @@ function App() {
   );
 }
 
-export default App;
+const mapStateToProps = state => {
+  const {user} = state;
+  return {
+    user
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  dispatch(getUserProfile());
+  return {}
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
