@@ -1,6 +1,7 @@
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
+import { Switch, Route, BrowserRouter as Router } from 'react-router-dom';
 
 import { getUserProfile } from './redux/auth/actions';
 
@@ -15,16 +16,20 @@ import './App.css';
 
 
 function App(props) {
-  // const user = useSelector(state => state.user.user);
   const {user} = props;
-
-  console.log(user, 'user');
-
+  const {loggedIn} = user;
   return (
     <div className="App">
-      <Nav></Nav>
-      <SignIn></SignIn>
-      {user.loggedIn}
+      {loggedIn && <Nav />}
+
+      <Router>
+        <Switch>
+          <Route exact path='/'>
+            {loggedIn ? <Inbox/> : <SignIn/> }
+          </Route>
+          {/* <Route exact path='/login/' component={SignIn}></Route> */}
+        </Switch>
+      </Router>
     </div>
   );
 }
@@ -40,6 +45,5 @@ const mapDispatchToProps = dispatch => {
   dispatch(getUserProfile());
   return {}
 }
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

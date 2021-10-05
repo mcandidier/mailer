@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 
-function Inbox() {
+const Inbox = () => {
     return (
         <h1>Inbox component</h1>
     )
