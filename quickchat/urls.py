@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 
 from django.views.generic import TemplateView
+from message.views import ResetPasswordView, ResetPasswordVerifyToken
 
 
 urlpatterns = [
@@ -24,4 +25,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/accounts/', include('drf_registration.urls')),
     path('api/messages/', include('message.urls')),
+    path('api/reset-password/', ResetPasswordView.as_view(), name='reset-password'),
+    path('api/reset-password/<uidb64>/<token>/', ResetPasswordVerifyToken.as_view(), name='reset-password')
 ]

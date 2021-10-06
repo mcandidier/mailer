@@ -15,7 +15,8 @@ import {
   Inbox,
   Nav,
   Register,
-  ResetPassword,
+  ForgotPassword,
+  ResetPassword
 } from './components';
 
 import './App.css';
@@ -40,8 +41,9 @@ function App(props) {
             {loggedIn ? <Inbox/> : <SignIn/> }
           </Route>
           <Route exact path='/register/' component={Register}></Route>
+          <Route exact path='/forgot-password/' component={ForgotPassword}></Route>
           <Route exact path='/reset-password/' component={ResetPassword}></Route>
-
+          {/* <Route exact path='/reset-password/' component={ResetPassword}></Route> */}
         </Switch>
       </Router>
     </div>

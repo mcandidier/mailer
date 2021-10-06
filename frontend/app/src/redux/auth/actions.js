@@ -19,7 +19,13 @@ export const handleLogout = () => {
 
 export const handleResetPassword = (data) => {
     return (dispatch) => {
-        return API.post('accounts/reset-password/', data);
+        return API.post('/reset-password/', data);
+    }
+}
+
+export const handleResetPasswordTokenVerification = (uidb64, token) => {
+    return (dispatch) => {
+        return API.get(`/reset-password/${uidb64}/${token}/`);
     }
 }
 

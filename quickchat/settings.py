@@ -16,7 +16,6 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
@@ -65,7 +64,8 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            os.path.join(BASE_DIR, 'frontend/app/build')
+            # os.path.join(BASE_DIR, 'frontend/app/build'),
+            os.path.join(BASE_DIR, 'templates')
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -150,6 +150,18 @@ REST_FRAMEWORK = {
 AUTHENTICATION_BACKENDS = [
     'drf_registration.auth.MultiFieldsModelBackend',
 ]
+
+def get_frontend_url(uri):
+    return 'http://localhost:3000{uri}'.format(uri=uri)
+
+
+DRF_REGISTRATION = {
+    'REGISTER_VERIFICATION_URL': get_frontend_url('/verify-user/'),
+    'RESET_PASSWORD_VERIFICATION_URL': get_frontend_url('/verify-reset-password/'),  # noqa
+    'REGISTER_EMAIL_VERIFICATION_URL': get_frontend_url('/verify-email/'),
+    'VERIFICATION_FROM_EMAIL': 'no-reply@example.com',
+}
+
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
