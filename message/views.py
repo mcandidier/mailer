@@ -39,7 +39,6 @@ class ResetPasswordVerifyToken(generics.GenericAPIView):
         return super().dispatch(*args, **kwargs)
 
     def get(self, *args, **kwargs):
-        print('get')
         # verify reset password token
         if self.user is not None:
             return Response({'success': 'Reset password token was verified.'}, status=status.HTTP_200_OK)

@@ -18,7 +18,6 @@ from .utils import Utils
 from django.conf import settings
 
 
-
 class MessageSerializer(serializers.ModelSerializer):
     """ Message model serializer
     """
@@ -75,6 +74,7 @@ class ResetPasswordSerializer(serializers.Serializer):
                 Utils().send_mail('Reset Password', 'auth/reset-password.html', context, user_obj.email)
         return super().validate(attrs)
 
+
 class ChangePasswordSerializer(serializers.Serializer):
 
     password = serializers.CharField(write_only=True)
@@ -93,6 +93,3 @@ class ChangePasswordSerializer(serializers.Serializer):
         user.set_password(password)
         user.save
         return user
-
-
-

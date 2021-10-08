@@ -2,11 +2,20 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import queryString from 'query-string';
 
-import { handleResetPasswordTokenVerification } from '../redux/auth/actions';
+import { Button } from '@mui/material';
+import { Field, reduxForm, SubmissionError } from 'redux-form';
+import { renderTextField, required } from '../common/Fields';
 
-function ResetPassword({handleResetPasswordTokenVerification, location}) {
+import { handleResetPasswordTokenVerification, handleResetChangePassword} from '../redux/auth/actions';
+
+function ResetPassword(props) {
+
+    const { handleResetPasswordTokenVerification, handleResetChangePassword, location, handleSubmit } = props;
+
     const urlValues = queryString.parse(location.search);
     const {token, uid} = urlValues;
+
+    console.log(token, uid)
 
     const [isTokenValid, setIsTokenValid] = useState(false)
 
@@ -17,18 +26,61 @@ function ResetPassword({handleResetPasswordTokenVerification, location}) {
             setIsTokenValid(false)
         });
     }, []);
+
+    const remoteError = (msg) => {
+        throw new SubmissionError({
+          confirm_password: `${msg}`
+        });
+      }
+
+
+    const submit = (values) => {
+        console.log('on submit', values);
+        console.log(uid, token);
+        return handleResetChangePassword(values, uid, token, remoteError);
+    }
+
     return (
         <div>
-            Reset your password
-            {isTokenValid && 
-                <form onSubmit=''>
-                    <input type="text" placeholder="new password" />
-                    <input type="text" placeholder="confirm password" />
-                    <button type="submit">Save</button>
+            Change password
+            { isTokenValid && 
+                <form onSubmit={handleSubmit(submit)} noValidate sx={{ mt: 1 }}>
+                    <Field
+                    name="password"
+                    component={renderTextField}
+                    label="password"
+                    type="password"
+                    validate={[required]}
+                    margin="normal"
+                    />
+        
+                    <Field
+                    name="confirm_password"
+                    component={renderTextField}
+                    label="confirm password"
+                    type="password"
+                    validate={[required]}
+                    margin="normal"
+                    />
+                    <Button
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    color="primary"
+                    sx={{ mt: 3, mb: 2 }}
+                    >
+                    Save
+                    </Button>
                 </form>
             }
         </div>
     )
 }
 
-export default connect(null, {handleResetPasswordTokenVerification})(ResetPassword);
+const ResetForm =  connect(null, {
+    handleResetPasswordTokenVerification,
+    handleResetChangePassword})(ResetPassword);
+
+export default reduxForm({
+    form: 'resetForm'
+})(ResetForm);

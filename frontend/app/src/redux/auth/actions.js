@@ -29,6 +29,17 @@ export const handleResetPasswordTokenVerification = (uidb64, token) => {
     }
 }
 
+export const handleResetChangePassword = (data, uidb64, token, remoteError) => {
+    return (dispatch) => {
+        return API.post(`/reset-password/${uidb64}/${token}/`, data).then( resp => {
+            console.log(resp);
+        }, (err) => {
+            const { confirm_password } = err.response.data;
+            remoteError(confirm_password);
+        });
+    }
+}
+
 export const getUserProfile = () => {
     return (dispatch) => {
         return API.get('accounts/profile/').then( resp => {
