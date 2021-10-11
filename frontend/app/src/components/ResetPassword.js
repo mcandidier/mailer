@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import queryString from 'query-string';
 
-import { Button } from '@mui/material';
+import { Button, Container, CssBaseline, Typography, Box } from '@mui/material';
 import { Field, reduxForm, SubmissionError } from 'redux-form';
 import { renderTextField, required } from '../common/Fields';
 
@@ -41,8 +41,20 @@ function ResetPassword(props) {
     }
 
     return (
-        <div>
-            Change password
+        <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <Box
+          sx={{
+            marginTop: 8,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+            <Typography component="h1" variant="h5">
+                Change password
+            </Typography>
+
             { isTokenValid && 
                 <form onSubmit={handleSubmit(submit)} noValidate sx={{ mt: 1 }}>
                     <Field
@@ -73,7 +85,8 @@ function ResetPassword(props) {
                     </Button>
                 </form>
             }
-        </div>
+        </Box>
+        </Container>
     )
 }
 
