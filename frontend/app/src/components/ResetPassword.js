@@ -35,8 +35,6 @@ function ResetPassword(props) {
 
 
     const submit = (values) => {
-        console.log('on submit', values);
-        console.log(uid, token);
         return handleResetChangePassword(values, uid, token, remoteError);
     }
 

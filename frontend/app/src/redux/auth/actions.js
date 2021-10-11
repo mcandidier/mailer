@@ -1,5 +1,17 @@
 import API from '../../api';
 
+export const handleSignUp = (data, successCallback, errorCallback) => {
+    return (dispatch) => {
+        return API.post('accounts/register/', data).then(resp => {
+            const {data} = resp;
+            dispatch({type: 'REGISTER', payload: data});
+            successCallback();
+        }, err => {
+            errorCallback(err.response.data);
+        });
+    }
+}
+
 export const handleLogin = (data, errorCallback) => {
     return (dispatch) => {
         return API.post('accounts/login/', data).then(resp => {

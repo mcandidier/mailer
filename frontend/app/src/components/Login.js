@@ -20,8 +20,6 @@ import { Field, reduxForm, SubmissionError } from 'redux-form';
 
 import { renderTextField, required } from '../common/Fields';
 
-import API from '../api';
-
 
 function SignIn(props) {
   const { error, handleSubmit, pristine, reset, submitting, handleLogin } = props;

@@ -43,7 +43,6 @@ function App(props) {
           <Route exact path='/register/' component={Register}></Route>
           <Route exact path='/forgot-password/' component={ForgotPassword}></Route>
           <Route exact path='/reset-password/' component={ResetPassword}></Route>
-          {/* <Route exact path='/reset-password/' component={ResetPassword}></Route> */}
         </Switch>
       </Router>
     </div>

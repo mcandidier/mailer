@@ -20,3 +20,17 @@ export const renderTextField = ({
     {...custom}
   />
 )
+
+
+export const formError = (errorMsg) => {
+  const msgs = {};
+  Object.keys(errorMsg).forEach( key => {
+    const msg = errorMsg[key];
+    if(Array.isArray(msg)) {
+      msgs[key] = msg.toString();
+    } else {
+      msgs[key] = msg;
+    }
+  });
+  return msgs;
+}

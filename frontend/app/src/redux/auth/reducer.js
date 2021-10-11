@@ -7,6 +7,12 @@ const INITIAL_STATE = {
 
 export function user(state=INITIAL_STATE, action) {
     switch(action.type) {
+        case 'REGISTER':
+            localStorage.setItem('access-token', action.payload.token);
+            return {
+                loggedIn: true,
+                user: action.payload
+            };
         case 'LOGIN':
             localStorage.setItem('access-token', action.payload.token);
             return {
