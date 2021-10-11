@@ -17,6 +17,8 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import { handleSignUp } from '../redux/auth/actions';
 
+import { useHistory } from 'react-router-dom';
+
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -34,7 +36,7 @@ const theme = createTheme();
 
 function Register(props) {
   const { handleSubmit, pristine, reset, submitting, handleSignUp} = props;
-  
+  const history = useHistory();
   const remoteError = (errorMsg) => {
     const msgs = formError(errorMsg);
     throw new SubmissionError(msgs);
@@ -42,8 +44,9 @@ function Register(props) {
 
   
   const onSubmit = (values) => {
-    return handleSignUp(values, () => {
+    return handleSignUp(values, (resp) => {
         alert('success');
+        history.push('/');
     }, remoteError);
   };
 
