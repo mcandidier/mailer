@@ -22,11 +22,18 @@ class MessageSerializer(serializers.ModelSerializer):
     """ Message model serializer
     """
     recipients = serializers.ListField(child=serializers.CharField(), write_only=True)
+    sender = serializers.SerializerMethodField(read_only=True)
+
+    def get_sender(self, obj):
+        return obj.sender.username
 
     class Meta:
         model = Message
-        fields = ['id', 'title', 'message', 'status', 'recipients', 'recipient', 'archived']
-        read_only_fields = ['sender', 'recipient']
+        fields = ['id', 'title',
+                'message', 'status', 'recipients',
+                'recipient', 'archived','sender', 
+                'timestamp', 'parent']
+        read_only_fields = ['sender', 'recipient', 'timestamp']
 
     def create(self, validate_data):
         recipients = validate_data.pop('recipients')

@@ -45,7 +45,6 @@ function Register(props) {
   
   const onSubmit = (values) => {
     return handleSignUp(values, (resp) => {
-        alert('success');
         history.push('/');
     }, remoteError);
   };

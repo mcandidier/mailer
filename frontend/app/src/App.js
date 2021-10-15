@@ -16,7 +16,8 @@ import {
   Nav,
   Register,
   ForgotPassword,
-  ResetPassword
+  ResetPassword,
+  Message,
 } from './components';
 
 import './App.css';
@@ -34,7 +35,7 @@ function App(props) {
 
   return (
     <div className="App">
-      {loggedIn && <Nav />}
+      {/* {loggedIn && <Nav />} */}
       <Router>
         <Switch>
           <Route exact path='/'>
@@ -43,6 +44,8 @@ function App(props) {
           <Route exact path='/register/' component={Register}></Route>
           <Route exact path='/forgot-password/' component={ForgotPassword}></Route>
           <Route exact path='/reset-password/' component={ResetPassword}></Route>
+          <Route exact path='/message/:id/' component={Message}></Route>
+
         </Switch>
       </Router>
     </div>

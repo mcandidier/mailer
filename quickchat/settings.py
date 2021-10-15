@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'drf_registration',
     'corsheaders',
+    'channels',
 
     # internal apps
     'message.apps.MessageConfig',
@@ -174,6 +175,16 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = ''
 EMAIL_HOST_PASSWORD = ''
 
+ASGI_APPLICATION = "quickchat.asgi.application"
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("localhost", 6379)],
+        },
+    },
+}
 
 # # Default from email
 # DEFAULT_FROM_EMAIL = 'info@testingdomain.com'

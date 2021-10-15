@@ -11,3 +11,13 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+
+.app-toolbar {
+  height: 48px;
+  padding: 0px 16px;
+  box-shadow: rgb(100 121 143 / 12%) 0px -1px 0px 0px inset;
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+}

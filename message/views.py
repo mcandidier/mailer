@@ -9,6 +9,8 @@ from django.contrib.auth.tokens import default_token_generator
 
 from rest_framework import serializers, viewsets, status, generics
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+
 
 
 from .serializers import (
@@ -94,10 +96,11 @@ class MessageDetailViewSet(viewsets.ViewSet):
 
 
     def message_detail(self, *args, **kwargs):
-        # return message detail
+        # get all message replies
         message_id = kwargs.get('id')
         message = Message.objects.get(id=message_id)
-        serializer = self.serializer_class(message)
+        replies = Message.objects.filter(parent=message)
+        serializer = self.serializer_class(replies, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def delete_message(self, *args, **kwargs):
@@ -109,18 +112,25 @@ class MessageDetailViewSet(viewsets.ViewSet):
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response({}, status=status.HTTP_400_BAD_REQUEST)
     
-    def update_message(self, *args, **kwargs):
-        # update selected message
-        pass
+    def post(self, args, **kwargs):
+        # reply to message
+        message_id = kwargs.get('id')
+        message = Message.objects.get(id=message_id)
+        serializer = self.serializer_class(data=self.request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
 
 
 class InboxViewSet(viewsets.ViewSet):
     """ Returns List of recieved messsages
     """
-    serializer_class = MessageRecipientSerializer
+    permission_classes = [IsAuthenticated]
+    serializer_class = MessageSerializer
     
     def inbox_list(self, *args, **kwargs):
-        messages = MessageRecipient.objects.filter(user=self.request.user)
-        serializer = self.serializer_class(messages, many=True)
+        messages = self.request.user.inbox.all()
+        qs = messages.exclude(parent__in=messages)
+        serializer = self.serializer_class(qs, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
-
