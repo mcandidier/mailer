@@ -5,7 +5,7 @@ import Register from './Register';
 import ForgotPassword from './ForgotPassword';
 import ResetPassword from './ResetPassword';
 import Message from './Message';
-import MessageForm from './MessageForm';
+import ReplyForm from './MessageForm';
 import MessageList from './MessageList';
 
 
@@ -18,5 +18,5 @@ export {
     ResetPassword,
     Message,
     MessageList,
-    MessageForm,
+    ReplyForm,
 }

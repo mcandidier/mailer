@@ -9,7 +9,7 @@ import IconButton from '@mui/material/IconButton';
 import CommentIcon from '@mui/icons-material/Comment';
 import { getUserInbox } from '../redux/message/actions';
 import {connect} from 'react-redux';
-import { Message, MessageForm } from '../components';
+import { Message } from '../components';
 import Container from '@mui/material/Container';
 import MessageToolbar from './Toolbar';
 
@@ -68,7 +68,6 @@ function CheckboxList(props) {
             <ListItemText 
             id={labelId} primary={msg.title}
             onClick={ () => handleClick(msg) } />
-
           </ListItemButton>
         </ListItem>
       );
@@ -86,7 +85,6 @@ function CheckboxList(props) {
     :
     <Container maxWidth={'xl'}>
       <Message message={activeMessage}></Message>
-      <MessageForm></MessageForm> 
     </Container>
     } 
     </React.Fragment>

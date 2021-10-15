@@ -9,12 +9,15 @@ import { handleSendMessage } from '../redux/message/actions';
 
 
 
-function MessageForm(props) {
-    const {handleSubmit, handleSendMessage} = props;
+function ReplyForm(props) {
+    const {handleSubmit, handleSendMessage, message } = props;
+    const recipient = message.recipient.toString();
 
     const onSubmit = (values) => {
         let data = values;
-        data['recipients'] = data.recipients.split(',').map(Number);
+    
+        data['parent'] = message.id;
+        data['recipients'] = recipient.split(',').map(Number);
         handleSendMessage(data);
     }
 
@@ -35,19 +38,6 @@ function MessageForm(props) {
                     label="message"
                     type="text"
                 />
-                <Field
-                    component={Form.renderTextField}
-                    name="parent"
-                    label="parent"
-                    type="text"
-                />
-                <Field
-                    component={Form.renderTextField}
-                    name="recipients"
-                    label="recipients"
-                    type="text"
-                />
-
                 <Button type="submit">
                     Save
                 </Button>
@@ -56,8 +46,8 @@ function MessageForm(props) {
     )
 }
 
-MessageForm = connect(null, {handleSendMessage})(MessageForm);
+ReplyForm = connect(null, {handleSendMessage})(ReplyForm);
 
 export default reduxForm({
-    form: 'messageForm',
-})(MessageForm);
+    form: 'replyForm',
+})(ReplyForm);

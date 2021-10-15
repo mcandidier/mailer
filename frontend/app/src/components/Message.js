@@ -1,12 +1,15 @@
 import React, { useState, useEffect }from 'react';
 import { connect } from 'react-redux';
-import { Grid, Card, CardHeader, Avatar, Typography, IconButton } from '@mui/material';
-import { makeStyles } from '@mui/styles';
+import { 
+    Grid, Card, CardHeader, Avatar, 
+    Typography, IconButton } from '@mui/material';
 
+
+import { makeStyles } from '@mui/styles';
 import ReplyIcon from '@mui/icons-material/Reply';
 
 import { getMessageDetail } from '../redux/message/actions';
-
+import { ReplyForm } from '../components';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -14,8 +17,6 @@ const useStyles = makeStyles((theme) => ({
         borderWidth: 'None',
     },
 }));
-
-
 
 const Message = (props) => {
     const { message, getMessageDetail} = props;
@@ -37,41 +38,70 @@ const Message = (props) => {
 
     }
 
-    return (
-        <Grid>
-            <Grid item xs={6}>
-            <Card sx={{ maxWidth: 345 }} className={classes.root}>
-                <CardHeader
-                    xs={{padding: 0}}
-                    avatar={
-                    <Avatar aria-label="recipe">
-                        R
-                    </Avatar>
-                    }
-                    title={message.title}
-                />
-            </Card>
+    const renderReplies = () => {
+        return replies.map((msg, index) => {
+            return <Grid container key={index}>
+                    <Grid item xs={6} key={index}>
+                    <Card sx={{ maxWidth: 345 }} className={classes.root}>
+                        <CardHeader
+                            xs={{padding: 0}}
+                            avatar={
+                            <Avatar aria-label="recipe">
+                                R
+                            </Avatar>
+                            }
+                            title={msg.title}
+                        />
+                    </Card>
+                </Grid>
 
+                <Grid 
+                    container
+                    item xs={6}
+                    direction="row"
+                    justifyContent="flex-end"
+                    alignItems="center">
+                        <Card className={classes.root} mr={1}>
+                            <Typography variant="caption" mr={1}>{msg.timestamp}</Typography>
+                        </Card>
+                </Grid>
             </Grid>
 
-                    
-            <Grid 
-            container
-            direction="row"
-            justifyContent="flex-end"
-            alignItems="center">
-                <Card className={classes.root} mr={1}>
-                    <Typography variant="caption" mr={1}>{message.timestamp}</Typography>
-                    <IconButton aria-label="back" onClick={ () => handleReply() }>
-                        <ReplyIcon />
-                    </IconButton>
+        });
+    }
+
+    return (
+        <Grid container>
+            <Grid item xs={6}>
+                <Card sx={{ maxWidth: 345 }} className={classes.root}>
+                    <CardHeader
+                        xs={{padding: 0}}
+                        avatar={
+                        <Avatar aria-label="recipe">
+                            R
+                        </Avatar>
+                        }
+                        title={message.title}
+                    />
                 </Card>
             </Grid>
-
-            <Grid item xs={12}>
-                <Typography variant="body1">{message.message}</Typography>
+            <Grid 
+                container
+                item xs={6}
+                direction="row"
+                justifyContent="flex-end"
+                alignItems="center">
+                    <Card className={classes.root} mr={1}>
+                        <Typography variant="caption" mr={1}>{message.timestamp}</Typography>
+                        <IconButton aria-label="back" onClick={ () => handleReply() }>
+                            <ReplyIcon />
+                        </IconButton>
+                    </Card>
             </Grid>
-
+            <Grid container>  
+                { renderReplies() }
+            </Grid>
+            <ReplyForm message={message}></ReplyForm> 
         </Grid>
 
     )
