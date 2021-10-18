@@ -40,7 +40,6 @@ function CheckboxList(props) {
   const handleBack = () => {
     setSelected(false);
     setActiveMessage({});
-
   }
 
   const renderMessageList = () => {
@@ -84,7 +83,7 @@ function CheckboxList(props) {
       renderMessageList()
     :
     <Container maxWidth={'xl'}>
-      <Message message={activeMessage}></Message>
+      <Message msgId={activeMessage.id}></Message>
     </Container>
     } 
     </React.Fragment>

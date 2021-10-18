@@ -7,7 +7,7 @@ from django.utils.http import (
 from django.contrib.auth.tokens import default_token_generator
 
 
-from rest_framework import serializers, viewsets, status, generics
+from rest_framework import serializers, views, viewsets, status, generics
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
@@ -99,8 +99,9 @@ class MessageDetailViewSet(viewsets.ViewSet):
         # get all message replies
         message_id = kwargs.get('id')
         message = Message.objects.get(id=message_id)
-        replies = Message.objects.filter(parent=message)
-        serializer = self.serializer_class(replies, many=True)
+        if message.parent:
+            message = message.parent
+        serializer = self.serializer_class(message)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def delete_message(self, *args, **kwargs):
@@ -122,6 +123,19 @@ class MessageDetailViewSet(viewsets.ViewSet):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+class MessageReplyViewSet(generics.GenericAPIView):
+    serializer_class = MessageSerializer
+ 
+    def get(self, *args, **kwargs):
+        # get all message replies
+        message_id = kwargs.get('id')
+        message = Message.objects.get(id=message_id)
+        if message.parent:
+            message = message.parent
+        replies = Message.objects.filter(parent=message)
+        serializer = self.serializer_class(replies, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
 
 class InboxViewSet(viewsets.ViewSet):
     """ Returns List of recieved messsages
@@ -130,7 +144,9 @@ class InboxViewSet(viewsets.ViewSet):
     serializer_class = MessageSerializer
     
     def inbox_list(self, *args, **kwargs):
-        messages = self.request.user.inbox.all()
-        qs = messages.exclude(parent__in=messages)
-        serializer = self.serializer_class(qs, many=True)
+        q1 = self.request.user.inbox.all()
+        # qs = MessageRecipient.objects.filter(
+        #     user=self.request.user).values_list('message')
+        # messages = Message.objects.filter(id__in=[qs])
+        serializer = self.serializer_class(q1, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)

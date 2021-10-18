@@ -2,13 +2,13 @@ import React, { useState, useEffect }from 'react';
 import { connect } from 'react-redux';
 import { 
     Grid, Card, CardHeader, Avatar, 
-    Typography, IconButton } from '@mui/material';
+    Typography, IconButton, Divider } from '@mui/material';
 
 
 import { makeStyles } from '@mui/styles';
 import ReplyIcon from '@mui/icons-material/Reply';
 
-import { getMessageDetail } from '../redux/message/actions';
+import { getMessageDetail, getMessageReplies } from '../redux/message/actions';
 import { ReplyForm } from '../components';
 
 const useStyles = makeStyles((theme) => ({
@@ -19,40 +19,47 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Message = (props) => {
-    const { message, getMessageDetail} = props;
+    const { msgId, getMessageDetail, getMessageReplies} = props;
     const classes = useStyles();
     const [replies, setReplies] = useState([]);
+    const [message, setMessage] = useState({});
+    const [showReplyForm, setShowReplyForm] = useState(false);
 
      useEffect( ()  => {
         const {id} = message;
         async function init() {
-            const data = await getMessageDetail(id);
-            setReplies(data);
+            const data = await getMessageDetail(msgId);
+            const dataReplies = await getMessageReplies(msgId);
+            setReplies(dataReplies);
+            setMessage(data);
         }
         init();
-    }, [])
+    }, []);
+
+    const addNew = (data) => {
+        setReplies([...replies, data]);
+    }
 
 
-    console.log(replies, 'replies');
-    const handleReply = () => {
-
+    const toggleForm = () => {
+        setShowReplyForm(!showReplyForm);
     }
 
     const renderReplies = () => {
         return replies.map((msg, index) => {
             return <Grid container key={index}>
                     <Grid item xs={6} key={index}>
-                    <Card sx={{ maxWidth: 345 }} className={classes.root}>
-                        <CardHeader
-                            xs={{padding: 0}}
-                            avatar={
-                            <Avatar aria-label="recipe">
-                                R
-                            </Avatar>
-                            }
-                            title={msg.title}
-                        />
-                    </Card>
+                        <Card sx={{ maxWidth: 345 }} className={classes.root}>
+                            <CardHeader
+                                xs={{padding: 0}}
+                                avatar={
+                                <Avatar aria-label="recipe">
+                                    R
+                                </Avatar>
+                                }
+                                title={msg.title}
+                            />
+                        </Card>
                 </Grid>
 
                 <Grid 
@@ -65,6 +72,7 @@ const Message = (props) => {
                             <Typography variant="caption" mr={1}>{msg.timestamp}</Typography>
                         </Card>
                 </Grid>
+                <Divider></Divider>
             </Grid>
 
         });
@@ -93,7 +101,7 @@ const Message = (props) => {
                 alignItems="center">
                     <Card className={classes.root} mr={1}>
                         <Typography variant="caption" mr={1}>{message.timestamp}</Typography>
-                        <IconButton aria-label="back" onClick={ () => handleReply() }>
+                        <IconButton aria-label="back" onClick={ () => setShowReplyForm(true) }>
                             <ReplyIcon />
                         </IconButton>
                     </Card>
@@ -101,10 +109,10 @@ const Message = (props) => {
             <Grid container>  
                 { renderReplies() }
             </Grid>
-            <ReplyForm message={message}></ReplyForm> 
+            { showReplyForm && <ReplyForm message={message} toggle={toggleForm} addNew={addNew}></ReplyForm>  }
         </Grid>
 
     )
 }
 
-export default connect(null, {getMessageDetail})(Message);
+export default connect(null, {getMessageDetail, getMessageReplies})(Message);

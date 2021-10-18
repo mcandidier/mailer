@@ -25,7 +25,7 @@ class MessageSerializer(serializers.ModelSerializer):
     sender = serializers.SerializerMethodField(read_only=True)
 
     def get_sender(self, obj):
-        return obj.sender.username
+        return obj.sender.id
 
     class Meta:
         model = Message

@@ -10,19 +10,37 @@ import { handleSendMessage } from '../redux/message/actions';
 
 
 function ReplyForm(props) {
-    const {handleSubmit, handleSendMessage, message } = props;
+    const {handleSubmit, handleSendMessage, message, toggle, reset, addNew } = props;
     const recipient = message.recipient.toString();
+    
+    console.log(recipient, 'recipient')
+
+    const successCallback = (data) => {
+        reset();
+        addNew(data);
+    }
 
     const onSubmit = (values) => {
         let data = values;
-    
         data['parent'] = message.id;
-        data['recipients'] = recipient.split(',').map(Number);
-        handleSendMessage(data);
+
+        data['recipients'] = [message.sender];
+
+        // data['recipients'] = recipient.split(',').map(Number);
+        handleSendMessage(data, '', successCallback);
     }
 
+
+
     return (
-        <div>
+        <div className='app__reply_form'>
+            <div className="header">
+                Reply to { message.title }
+
+                <span className="close" onClick={toggle}>
+                    close
+                </span>
+            </div>
             <form onSubmit={handleSubmit(onSubmit)} noValidate>
                 <Field
                     component={Form.renderTextField}
@@ -30,6 +48,7 @@ function ReplyForm(props) {
                     name="title"
                     label="title"
                     type="text"
+                    variant="standard"
                 />
                 <Field
                     component={Form.renderTextField}
@@ -37,9 +56,10 @@ function ReplyForm(props) {
                     name="message"
                     label="message"
                     type="text"
+                    variant="standard"
                 />
-                <Button type="submit">
-                    Save
+                <Button type="submit" variant="contained" size="small">
+                    Send
                 </Button>
             </form>
         </div>

@@ -31,7 +31,7 @@ class Message(models.Model):
 
 class MessageRecipient(models.Model):
     message = models.ForeignKey(Message, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='inboxes')
     timestamp = models.DateTimeField(auto_now=True)
 
 

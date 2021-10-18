@@ -21,3 +21,42 @@ code {
   -webkit-box-align: center;
   align-items: center;
 }
+
+.app__reply_form {
+  position: absolute;
+  height: auto;
+  bottom: 0;
+  right: 20px;
+  width: 600px;
+  height: 452px;
+  background-color: #fff;
+}
+
+.app__reply_form .header {
+  background-color: #202124;
+  padding: 10px;
+  color: #fff;
+  font-weight: 400;
+  font-size: 13px;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  margin-bottom: 16px;
+}
+
+.app__reply_form .close {
+  float: right;
+  display: block;
+  cursor: pointer;
+}
+.app__reply_form form {
+  padding: 0 16px;
+  position: relative;
+  height: 400px;
+}
+
+.app__reply_form button {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+}
+
