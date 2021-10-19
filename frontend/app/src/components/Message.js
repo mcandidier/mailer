@@ -53,8 +53,8 @@ const Message = (props) => {
                             <CardHeader
                                 xs={{padding: 0}}
                                 avatar={
-                                <Avatar aria-label="recipe">
-                                    R
+                                <Avatar aria-label="">
+                                    {msg.sender}
                                 </Avatar>
                                 }
                                 title={msg.title}

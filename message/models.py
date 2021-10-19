@@ -1,3 +1,4 @@
+from django.core.checks import messages
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -28,11 +29,24 @@ class Message(models.Model):
     def __str__(self):
         return f'{self.title} - {self.sender}'
 
+    @property
+    def has_children(self, *args, **kwargs):
+        return Message.objects.filter(parent=self).exists()
+
+    @property
+    def is_parent(self, *args, **kwargs):
+        return True if self.parent else False
+
+    def is_seen(self, *args, **kwargs):
+        message = MessageRecipient.objects.get(message=self)
+        return message.seen
+
 
 class MessageRecipient(models.Model):
     message = models.ForeignKey(Message, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='inboxes')
     timestamp = models.DateTimeField(auto_now=True)
+    seen = models.BooleanField(default=False)
 
 
 class Category(models.Model):

@@ -144,9 +144,8 @@ class InboxViewSet(viewsets.ViewSet):
     serializer_class = MessageSerializer
     
     def inbox_list(self, *args, **kwargs):
-        q1 = self.request.user.inbox.all()
-        # qs = MessageRecipient.objects.filter(
-        #     user=self.request.user).values_list('message')
-        # messages = Message.objects.filter(id__in=[qs])
-        serializer = self.serializer_class(q1, many=True)
+        qs = self.request.user.inbox.filter(parent__isnull=True).distinct()
+        sent_msgs = self.request.user.messages.filter(replies__isnull=False)
+        qs = qs.union(sent_msgs)
+        serializer = self.serializer_class(qs, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
