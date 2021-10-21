@@ -17,7 +17,8 @@ from .serializers import (
     MessageSerializer,
     MessageRecipientSerializer,
     ResetPasswordSerializer,
-    ChangePasswordSerializer, 
+    ChangePasswordSerializer,
+    MessageRecipientSerializer
 )
 
 from .models import Message, MessageRecipient
@@ -144,8 +145,36 @@ class InboxViewSet(viewsets.ViewSet):
     serializer_class = MessageSerializer
     
     def inbox_list(self, *args, **kwargs):
-        qs = self.request.user.inbox.filter(parent__isnull=True).distinct()
-        sent_msgs = self.request.user.messages.filter(replies__isnull=False)
-        qs = qs.union(sent_msgs)
+        params = self.request.GET.get('filter')
+        print('params', params)
+        if params == 'inbox':
+            qs = self.request.user.inbox.filter(parent__isnull=True).distinct()
+            sent_msgs = self.request.user.messages.filter(replies__isnull=False)
+            qs = qs.union(sent_msgs)
+        elif params == 'sent' or params == 'draft':
+            opt = {
+                'draft': 1,
+                'sent': 2
+            }
+            qs = Message.objects.filter(status=opt.get(params), sender=self.request.user, parent__isnull=True)
+        else:
+            qs = self.request.user.inboxes.filter(archive=True).values_list('message__id')
+            print(qs)
+            qs = Message.objects.filter(id__in=[qs])
         serializer = self.serializer_class(qs, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class TrashAPIview(generics.GenericAPIView):
+    """ Retrieve trash objects
+    """
+
+    serializer_class = MessageRecipientSerializer
+
+    def get(self, *args, **kwargs):
+        messages = MessageRecipient.objects.filter(
+            user=self.request.user,
+            archive=True
+        )
+        serializer = self.serializer_class(messages, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)

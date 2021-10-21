@@ -100,3 +100,11 @@ class ChangePasswordSerializer(serializers.Serializer):
         user.set_password(password)
         user.save
         return user
+
+
+class MessageRecipientSerializer(serializers.ModelSerializer):
+    message = MessageSerializer()
+
+    class Meta:
+        model = MessageRecipient
+        fields = ['id','message', 'user', 'seen', 'archive']

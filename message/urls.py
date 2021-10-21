@@ -4,7 +4,8 @@ from .views import (
     MessageViewSet,
     InboxViewSet,
     MessageDetailViewSet,
-    MessageReplyViewSet
+    MessageReplyViewSet,
+    TrashAPIview
 )
 
 urlpatterns = [
@@ -12,4 +13,6 @@ urlpatterns = [
     path('<int:id>/', MessageDetailViewSet.as_view({'post': 'delete_message', 'get':'message_detail'})),
     path('<int:id>/replies/', MessageReplyViewSet.as_view()),
     path('inbox/', InboxViewSet.as_view({'get':'inbox_list'})),
+    path('trash/', TrashAPIview.as_view()),
+    # path('trash/<int:id>/', TrashAPIview.as_view(), name='trash'),
 ]

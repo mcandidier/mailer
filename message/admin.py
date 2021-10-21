@@ -15,5 +15,6 @@ class MessageAdmin(admin.ModelAdmin):
 admin.site.register(Category)
 
 admin.site.register(Message, MessageAdmin)
+admin.site.register(MessageRecipient)
 # admin.site.register(UserMessage, UserMessageAdmin)
 

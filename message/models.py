@@ -47,6 +47,7 @@ class MessageRecipient(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='inboxes')
     timestamp = models.DateTimeField(auto_now=True)
     seen = models.BooleanField(default=False)
+    archive = models.BooleanField(default=False)
 
 
 class Category(models.Model):
