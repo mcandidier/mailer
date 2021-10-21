@@ -12,9 +12,11 @@ import {connect} from 'react-redux';
 import { Message } from '../components';
 import Container from '@mui/material/Container';
 import MessageToolbar from './Toolbar';
+import Box from '@mui/material/Box';
 
-function CheckboxList(props) {
+function MessageList(props) {
   const { messages } = props;
+
   const [checked, setChecked] = React.useState([0]);
   const [selected, setSelected] = React.useState(false);
   const [activeMessage, setActiveMessage ] =  React.useState({});
@@ -43,35 +45,47 @@ function CheckboxList(props) {
   }
 
   const renderMessageList = () => {
-    return <List sx={{ width: '100%', maxWidth: 'xl', bgcolor: 'background.paper' }}>
-    {messages.map((msg, index) => {
-      const labelId = `checkbox-list-label-${msg.title}`;
-      return (
-        <ListItem
-          key={index}
-          divider={true}
-          disablePadding
-        >
-          <ListItemButton role={undefined} disableRipple dense>
-            <ListItemIcon>
-              <Checkbox
-                edge="start"
-                tabIndex={-1}
-                disableRipple
-                onClick={handleToggle(index)}
-                inputProps={{ 'aria-labelledby': labelId }}
-              />
-            </ListItemIcon>
-            <ListItemText
-            sx={{ maxWidth: '10%' }}>{msg.sender}</ListItemText>
-            <ListItemText 
-            id={labelId} primary={msg.title}
-            onClick={ () => handleClick(msg) } />
-          </ListItemButton>
-        </ListItem>
-      );
-    })}
-  </List>
+    return <div>
+      <List sx={{ width: '100%', maxWidth: 'xl', bgcolor: 'background.paper' }}>
+      {messages.map((msg, index) => {
+        const labelId = `checkbox-list-label-${msg.title}`;
+        return (
+          <ListItem
+            key={index}
+            divider={true}
+            disablePadding
+          >
+            <ListItemButton role={undefined} disableRipple dense>
+              <ListItemIcon>
+                <Checkbox
+                  edge="start"
+                  tabIndex={-1}
+                  disableRipple
+                  onClick={handleToggle(index)}
+                  inputProps={{ 'aria-labelledby': labelId }}
+                />
+              </ListItemIcon>
+              <ListItemText
+              sx={{ maxWidth: '10%' }}>{msg.sender}</ListItemText>
+              <ListItemText 
+              id={labelId} primary={msg.title}
+              onClick={ () => handleClick(msg) } />
+            </ListItemButton>
+          </ListItem>
+        );
+      })}
+    </List>
+    { !messages.length &&
+    
+      <Box 
+        display="flex" 
+        alignItems="center"
+        justifyContent="center"
+      >
+        No messages
+      </Box>
+    }
+  </div> 
   }
 
 
@@ -97,10 +111,11 @@ const mapStateToProps = (state, ownProps) => {
       messages
   }
 }
-const mapDispatchToProps = dispatch => {
-  dispatch(getUserInbox());
+const mapDispatchToProps = (dispatch, ownProps) => {
+  const {filter} = ownProps;
+  dispatch(getUserInbox(filter));
   return {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(CheckboxList);
+export default connect(mapStateToProps, mapDispatchToProps)(MessageList);

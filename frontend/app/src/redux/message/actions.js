@@ -1,9 +1,9 @@
 import API from '../../api';
 
 
-export const getUserInbox = (data) => {
+export const getUserInbox = (filter) => {
     return async (dispatch) => {
-         const response = await API.get('messages/inbox/');
+         const response = await API.get(`messages/inbox/?filter=${filter}`);
          const { data } = response;
          dispatch({'type': 'GET_INBOX', data })
     }
@@ -28,11 +28,19 @@ export const getMessageDetail = messageID => {
         const response = await API.get(`messages/${messageID}/`);
         return response.data;
     }
-}    
+}
 
 export const getMessageReplies = messageID => {
     return async (dispatch) => {
         const response = await API.get(`messages/${messageID}/replies/`);
         return response.data;
     }
-}    
+}
+
+
+export const getTrashMessages = () => {
+    return async (dispatch) => {
+        const response = await API.get(`messages/trash/`);
+        return response.data;
+    }
+}

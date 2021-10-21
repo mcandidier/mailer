@@ -26,7 +26,6 @@ const Message = (props) => {
     const [showReplyForm, setShowReplyForm] = useState(false);
 
      useEffect( ()  => {
-        const {id} = message;
         async function init() {
             const data = await getMessageDetail(msgId);
             const dataReplies = await getMessageReplies(msgId);

@@ -10,37 +10,34 @@ import BarChartIcon from '@mui/icons-material/BarChart';
 import LayersIcon from '@mui/icons-material/Layers';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 
+import { Link } from "react-router-dom";
+
+
 export const mainListItems = (
   <div>
-    <ListItem button>
+    <ListItem button component={Link} to='/'>
       <ListItemIcon>
         <DashboardIcon />
       </ListItemIcon>
-      <ListItemText primary="Dashboard" />
+      <ListItemText primary="Inbox" />
     </ListItem>
-    <ListItem button>
+    <ListItem button  component={Link} to='/sent'>
       <ListItemIcon>
         <ShoppingCartIcon />
       </ListItemIcon>
-      <ListItemText primary="Orders" />
+      <ListItemText primary="Sent" />
     </ListItem>
-    <ListItem button>
+    <ListItem button  component={Link} to='/draft'>
       <ListItemIcon>
         <PeopleIcon />
       </ListItemIcon>
-      <ListItemText primary="Customers" />
+      <ListItemText primary="Drafts" />
     </ListItem>
-    <ListItem button>
+    <ListItem button component={Link} to='/trash'>
       <ListItemIcon>
         <BarChartIcon />
       </ListItemIcon>
-      <ListItemText primary="Reports" />
-    </ListItem>
-    <ListItem button>
-      <ListItemIcon>
-        <LayersIcon />
-      </ListItemIcon>
-      <ListItemText primary="Integrations" />
+      <ListItemText primary="Trash" />
     </ListItem>
   </div>
 );

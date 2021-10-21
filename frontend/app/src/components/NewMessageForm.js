@@ -8,8 +8,7 @@ import Button from '@mui/material/Button';
 import { handleSendMessage } from '../redux/message/actions';
 
 
-
-function ReplyForm(props) {
+function MessageForm(props) {
     const {handleSubmit, handleSendMessage, message, toggle, reset, addNew } = props;
     const recipient = message.recipient.toString();
     
@@ -62,8 +61,8 @@ function ReplyForm(props) {
     )
 }
 
-ReplyForm = connect(null, {handleSendMessage})(ReplyForm);
+MessageForm = connect(null, {handleSendMessage})(MessageForm);
 
 export default reduxForm({
-    form: 'replyForm',
-})(ReplyForm);
+    form: 'messageForm',
+})(MessageForm);

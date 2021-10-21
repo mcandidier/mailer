@@ -7,19 +7,18 @@ import {
   BrowserRouter as Router,
   Link }  from 'react-router-dom';
 
-import { getUserProfile } from './redux/auth/actions';
-
-
 import {
   SignIn,
-  Inbox,
-  Nav,
+  Main,
   Register,
   ForgotPassword,
   ResetPassword,
   Message,
+  Trash,
+  MessageList
 } from './components';
 
+import { getUserProfile } from './redux/auth/actions';
 import './App.css';
 
 
@@ -35,17 +34,27 @@ function App(props) {
 
   return (
     <div className="App">
-      {/* {loggedIn && <Nav />} */}
+      {/* TODO: add config for protected routes */}
       <Router>
         <Switch>
           <Route exact path='/'>
-            {loggedIn ? <Inbox/> : <SignIn/> }
+            {loggedIn ? <Main  component={MessageList}/> : <SignIn/> }
           </Route>
+
+          <Route exact path='/draft'>
+          {loggedIn ? <Main  component={MessageList}/> : <SignIn/> }
+          </Route>
+          <Route exact path='/sent'>
+          {loggedIn ? <Main  component={MessageList}/> : <SignIn/> }
+          </Route>
+          <Route exact path='/trash'>
+            <Main component={Trash}></Main>
+          </Route>
+
           <Route exact path='/register/' component={Register}></Route>
           <Route exact path='/forgot-password/' component={ForgotPassword}></Route>
           <Route exact path='/reset-password/' component={ResetPassword}></Route>
           <Route exact path='/message/:id/' component={Message}></Route>
-
         </Switch>
       </Router>
     </div>
