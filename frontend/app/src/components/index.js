@@ -1,5 +1,5 @@
 import SignIn from './Login';
-import Main from './Inbox';
+import Main from './Main';
 import Nav from './Nav';
 import Register from './Register';
 import ForgotPassword from './ForgotPassword';

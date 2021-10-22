@@ -1,9 +1,18 @@
-export const messages = (state=[], action) => {
+
+const INITIAL_STATE = {
+    filter: 'inbox',
+    data: []
+}
+
+export const messages = (state=INITIAL_STATE, action) => {
     switch(action.type) {
+        case 'SET_FILTER':
+            return Object.assign({}, state, {'filter': action.payload}); 
         case 'GET_INBOX':
-            return action.data;
+            console.log(action)
+            return Object.assign({}, state, {'data': action.data}); 
         case 'SEND_MESSAGE':
-            return [...state, action.data]
+            return Object.assign({}, ...state, {'data': action.payload}); 
         default:
             return state;
     }

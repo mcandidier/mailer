@@ -1,5 +1,6 @@
-import * as React from 'react';
-import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
+import React, {useEffect} from 'react';
+import { connect } from 'react-redux';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -8,9 +9,11 @@ import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Link from '@mui/material/Link';
 
+import { Sidebar } from '../components'; 
 
-import { MessageList, Sidebar } from '../components'; 
-
+import { useLocation} from 'react-router-dom';
+import { setFilter } from '../redux/message/actions';
+import { useDispatch } from 'react-redux';
 
 function Copyright(props) {
   return (
@@ -30,9 +33,11 @@ const mdTheme = createTheme();
 
 function Main(props) {
   const {component} = props;
-  console.log(component, props);
-  const filter = props.location?.pathname.replace('/', '');
+  const dispatch = useDispatch();
 
+  const {pathname} = useLocation();
+  console.log(pathname);
+  dispatch(setFilter(pathname.replace('/', '')));
   return (
     <ThemeProvider theme={mdTheme}>
       <Box sx={{ display: 'flex' }}>
@@ -57,9 +62,12 @@ function Main(props) {
                   sx={{
                     display: 'flex',
                     flexDirection: 'column',
+                    width: '100%'
                   }}
                   component={component}
                 >
+
+
                 </Paper>
               </Grid>
             </Grid>
@@ -71,4 +79,5 @@ function Main(props) {
   );
 }
 
-export default Main;
+export default connect(null, {
+})(Main);

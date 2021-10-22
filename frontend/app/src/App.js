@@ -30,6 +30,8 @@ function App(props) {
     if(loggedIn) {
       getUserProfile();
     }
+
+
   },[]);
 
   return (
@@ -73,5 +75,6 @@ const mapDispatchToProps = dispatch => {
     getUserProfile: () => dispatch(getUserProfile()),
   }
 }
+
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

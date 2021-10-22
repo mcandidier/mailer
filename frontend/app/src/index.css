@@ -25,8 +25,8 @@ code {
 .app__reply_form {
   position: absolute;
   height: auto;
-  bottom: 0;
-  right: 20px;
+  bottom: 5px;
+  right: 5px;
   width: 600px;
   height: 452px;
   background-color: #fff;

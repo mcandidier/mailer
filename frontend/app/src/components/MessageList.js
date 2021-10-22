@@ -8,11 +8,12 @@ import Checkbox from '@mui/material/Checkbox';
 import IconButton from '@mui/material/IconButton';
 import CommentIcon from '@mui/icons-material/Comment';
 import { getUserInbox } from '../redux/message/actions';
-import {connect} from 'react-redux';
+import {connect, useDispatch} from 'react-redux';
 import { Message } from '../components';
 import Container from '@mui/material/Container';
 import MessageToolbar from './Toolbar';
 import Box from '@mui/material/Box';
+
 
 function MessageList(props) {
   const { messages } = props;
@@ -20,6 +21,7 @@ function MessageList(props) {
   const [checked, setChecked] = React.useState([0]);
   const [selected, setSelected] = React.useState(false);
   const [activeMessage, setActiveMessage ] =  React.useState({});
+
 
   const handleToggle = (value) => () => {
     const currentIndex = checked.indexOf(value);
@@ -55,7 +57,7 @@ function MessageList(props) {
             divider={true}
             disablePadding
           >
-            <ListItemButton role={undefined} disableRipple dense>
+            <ListItemButton disableRipple dense>
               <ListItemIcon>
                 <Checkbox
                   edge="start"
@@ -67,9 +69,10 @@ function MessageList(props) {
               </ListItemIcon>
               <ListItemText
               sx={{ maxWidth: '10%' }}>{msg.sender}</ListItemText>
-              <ListItemText 
+              <ListItemText
+              onClick={ () => handleClick(msg) }
               id={labelId} primary={msg.title}
-              onClick={ () => handleClick(msg) } />
+              />
             </ListItemButton>
           </ListItem>
         );
@@ -92,13 +95,10 @@ function MessageList(props) {
   return (
     <React.Fragment>      
     <MessageToolbar handleBack={handleBack}/>
-
     { !selected ?
       renderMessageList()
     :
-    <Container maxWidth={'xl'}>
-      <Message msgId={activeMessage.id}></Message>
-    </Container>
+    <Message msgId={activeMessage.id}></Message>
     } 
     </React.Fragment>
   );
@@ -106,14 +106,14 @@ function MessageList(props) {
 
 
 const mapStateToProps = (state, ownProps) => {
-  const {messages} = state;
+  const messages = state.messages.data;
   return {
       messages
   }
 }
 const mapDispatchToProps = (dispatch, ownProps) => {
-  const {filter} = ownProps;
-  dispatch(getUserInbox(filter));
+  console.log(ownProps)
+  dispatch(getUserInbox('inbox'));
   return {
   }
 }

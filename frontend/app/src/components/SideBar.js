@@ -18,6 +18,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import { mainListItems } from './ListItems';
+import { connect } from 'react-redux';
 
 import { MessageList } from '../components'; 
 
@@ -82,10 +83,10 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 );
 
 
-function Sidebar() {
+function Sidebar({user}) {
     const [open, setOpen] = React.useState(true);
     const drawerWidth = 240;
-
+    console.log(user)
     const toggleDrawer = () => {
       setOpen(!open);
     };
@@ -117,7 +118,7 @@ function Sidebar() {
               noWrap
               sx={{ flexGrow: 1 }}
             >
-              Dashboard
+              Dashboard {user.user?.username}
             </Typography>
             <IconButton color="inherit">
               <Badge badgeContent={4} color="secondary">
@@ -147,4 +148,12 @@ function Sidebar() {
     )
 }
 
-export default Sidebar;
+
+const mapStateToProps = (state) => {
+    const {user} = state;
+    return {
+        user
+    }
+}
+
+export default connect(mapStateToProps, {})(Sidebar);

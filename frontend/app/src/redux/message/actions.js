@@ -44,3 +44,11 @@ export const getTrashMessages = () => {
         return response.data;
     }
 }
+
+
+export const setFilter = (filter) => {
+    return async (dispatch) => {
+        dispatch(getUserInbox(filter));
+    }
+}
+

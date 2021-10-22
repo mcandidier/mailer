@@ -46,9 +46,11 @@ const Message = (props) => {
 
     const renderReplies = () => {
         return replies.map((msg, index) => {
-            return <Grid container key={index}>
+            return <Grid container key={index} sx={{
+                backgroundColor: '#fff'
+            }}>
                     <Grid item xs={6} key={index}>
-                        <Card sx={{ maxWidth: 345 }} className={classes.root}>
+                        <Card className={classes.root}>
                             <CardHeader
                                 xs={{padding: 0}}
                                 avatar={
@@ -78,9 +80,11 @@ const Message = (props) => {
     }
 
     return (
-        <Grid container>
+        <Grid container sx={{
+            backgroundColor: '#fff'
+        }}>
             <Grid item xs={6}>
-                <Card sx={{ maxWidth: 345 }} className={classes.root}>
+                <Card className={classes.root}>
                     <CardHeader
                         xs={{padding: 0}}
                         avatar={
