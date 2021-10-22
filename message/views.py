@@ -146,21 +146,14 @@ class InboxViewSet(viewsets.ViewSet):
     
     def inbox_list(self, *args, **kwargs):
         params = self.request.GET.get('filter')
-        print('params', params)
-        if params == 'inbox':
+        if params == 'inbox' or params == '':
             qs = self.request.user.inbox.filter(parent__isnull=True).distinct()
             sent_msgs = self.request.user.messages.filter(replies__isnull=False)
             qs = qs.union(sent_msgs)
-        elif params == 'sent' or params == 'draft':
-            opt = {
-                'draft': 1,
-                'sent': 2
-            }
-            qs = Message.objects.filter(status=opt.get(params), sender=self.request.user, parent__isnull=True)
-        else:
-            qs = self.request.user.inboxes.filter(archive=True).values_list('message__id')
-            print(qs)
-            qs = Message.objects.filter(id__in=[qs])
+        elif params == 'draft':
+            qs = Message.objects.filter(status=1, sender=self.request.user, parent__isnull=True)
+        elif params == 'sent':
+            qs = self.request.user.messages.filter(archived=False)
         serializer = self.serializer_class(qs, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 

@@ -32,7 +32,7 @@ class MessageSerializer(serializers.ModelSerializer):
         fields = ['id', 'title',
                 'message', 'status', 'recipients',
                 'recipient', 'archived','sender', 
-                'timestamp', 'parent']
+                'timestamp', 'parent', 'status']
         read_only_fields = ['sender', 'recipient', 'timestamp']
 
     def create(self, validate_data):
