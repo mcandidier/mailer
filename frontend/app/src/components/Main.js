@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import { connect } from 'react-redux';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -9,7 +9,7 @@ import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Link from '@mui/material/Link';
 
-import { Sidebar } from '../components'; 
+import { Sidebar, MessageForm } from '../components'; 
 
 import { useLocation} from 'react-router-dom';
 import { setFilter } from '../redux/message/actions';
@@ -19,8 +19,8 @@ function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        Your Website
+      <Link color="inherit" href="https://github.com/mcandidier">
+        mcandidier
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -31,18 +31,28 @@ function Copyright(props) {
 
 const mdTheme = createTheme();
 
-function Main(props) {
-  const {component} = props;
+function Main({component}) {
+  const [toggleForm, setToggleForm] = useState(false);
   const dispatch = useDispatch();
-
   const {pathname} = useLocation();
-  console.log(pathname);
   dispatch(setFilter(pathname.replace('/', '')));
+  
+  const toggleMessageForm = () => {
+    setToggleForm(!toggleForm)
+  }
+
+
   return (
     <ThemeProvider theme={mdTheme}>
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
-        <Sidebar />
+
+        {toggleForm && 
+          <MessageForm toggle={toggleMessageForm}/>
+        }
+
+
+        <Sidebar toggle={toggleMessageForm} />
         <Box
           component="main"
           sx={{
@@ -66,8 +76,6 @@ function Main(props) {
                   }}
                   component={component}
                 >
-
-
                 </Paper>
               </Grid>
             </Grid>

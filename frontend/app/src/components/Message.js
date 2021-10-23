@@ -39,7 +39,6 @@ const Message = (props) => {
         setReplies([...replies, data]);
     }
 
-
     const toggleForm = () => {
         setShowReplyForm(!showReplyForm);
     }

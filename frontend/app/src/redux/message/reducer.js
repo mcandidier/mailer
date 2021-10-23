@@ -9,10 +9,13 @@ export const messages = (state=INITIAL_STATE, action) => {
         case 'SET_FILTER':
             return Object.assign({}, state, {'filter': action.payload}); 
         case 'GET_INBOX':
-            console.log(action)
             return Object.assign({}, state, {'data': action.data}); 
         case 'SEND_MESSAGE':
-            return Object.assign({}, ...state, {'data': action.payload}); 
+            console.log(action)
+            return { // returning a copy of orignal state 
+                ...state, //copying the original state
+                data: [...state.data, action.data] //new todos array 
+               } 
         default:
             return state;
     }

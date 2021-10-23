@@ -6,6 +6,8 @@ import ForgotPassword from './ForgotPassword';
 import ResetPassword from './ResetPassword';
 import Message from './Message';
 import ReplyForm from './MessageForm';
+import MessageForm from './NewMessageForm';
+
 import MessageList from './MessageList';
 import Trash from './Trash';
 import { mainListItems } from './ListItems';
@@ -25,4 +27,5 @@ export {
     Trash,
     mainListItems,
     Sidebar,
+    MessageForm,
 }

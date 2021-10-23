@@ -15,6 +15,7 @@ export const handleSendMessage = (data, type='', successCallback) => {
             const { data } = resp;
             if(type === 'new') {
                 dispatch({'type': 'SEND_MESSAGE', data });
+                successCallback();
             } else {
                 successCallback(data);
             }

@@ -60,3 +60,12 @@ code {
   right: 16px;
 }
 
+.btn-compose {
+  width: 80%;
+  margin: 0 auto !important;
+}
+.btn-compose span.text {
+  font-weight: 600;
+  color: #202124;
+  text-transform: capitalize;
+}

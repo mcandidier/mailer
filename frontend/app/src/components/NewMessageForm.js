@@ -9,28 +9,25 @@ import { handleSendMessage } from '../redux/message/actions';
 
 
 function MessageForm(props) {
-    const {handleSubmit, handleSendMessage, message, toggle, reset, addNew } = props;
-    const recipient = message.recipient.toString();
+    const {handleSubmit, handleSendMessage, toggle, reset } = props;
     
-    console.log(recipient, 'recipient')
 
     const successCallback = (data) => {
-        reset();
-        addNew(data);
+      reset();
     }
+
 
     const onSubmit = (values) => {
         let data = values;
-        data['parent'] = message.id;
-        data['recipients'] = [message.sender];
-        // data['recipients'] = recipient.split(',').map(Number);
-        handleSendMessage(data, '', successCallback);
+        // data['parent'] = message.id;
+        data['recipients'] = data.recipient.split(',').map(Number);
+        handleSendMessage(data, 'new',successCallback);
     }
 
     return (
         <div className='app__reply_form'>
             <div className="header">
-                Reply to { message.title }
+                New message
 
                 <span className="close" onClick={toggle}>
                     close
@@ -40,8 +37,17 @@ function MessageForm(props) {
                 <Field
                     component={Form.renderTextField}
                     validate={[Form.required]}
+                    name="recipient"
+                    label="To"
+                    type="text"
+                    variant="standard"
+                    autofocus="true"
+                />
+                <Field
+                    component={Form.renderTextField}
+                    validate={[Form.required]}
                     name="title"
-                    label="title"
+                    label="Subject"
                     type="text"
                     variant="standard"
                 />
@@ -49,10 +55,11 @@ function MessageForm(props) {
                     component={Form.renderTextField}
                     validate={[Form.required]}
                     name="message"
-                    label="message"
+                    label="Message"
                     type="text"
                     variant="standard"
                 />
+                
                 <Button type="submit" variant="contained" size="small">
                     Send
                 </Button>

@@ -10,11 +10,10 @@ import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Badge from '@mui/material/Badge';
-import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
+import { Button } from '@mui/material';
 import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
+import AddIcon from '@mui/icons-material/Add';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import { mainListItems } from './ListItems';
@@ -83,10 +82,9 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 );
 
 
-function Sidebar({user}) {
+function Sidebar({user, toggle}) {
     const [open, setOpen] = React.useState(true);
     const drawerWidth = 240;
-    console.log(user)
     const toggleDrawer = () => {
       setOpen(!open);
     };
@@ -111,6 +109,7 @@ function Sidebar({user}) {
             >
               <MenuIcon />
             </IconButton>
+
             <Typography
               component="h1"
               variant="h6"
@@ -140,14 +139,21 @@ function Sidebar({user}) {
               <ChevronLeftIcon />
             </IconButton>
           </Toolbar>
-          <Divider />
+          {/* <Divider /> */}
+
+          <Button className="btn-compose" 
+            variant="outlined"
+            onClick={toggle}
+            startIcon={<AddIcon />}>
+            <span className='text'>Compose</span>
+          </Button>
+
           <List>{mainListItems}</List>
           <Divider />
         </Drawer>
     </React.Fragment>
     )
 }
-
 
 const mapStateToProps = (state) => {
     const {user} = state;

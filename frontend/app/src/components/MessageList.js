@@ -18,39 +18,71 @@ import Box from '@mui/material/Box';
 function MessageList(props) {
   const { messages } = props;
 
-  const [checked, setChecked] = React.useState([0]);
-  const [selected, setSelected] = React.useState(false);
+  // const [checked, setChecked] = React.useState([0]);
+  const [selected, setSelected] = React.useState([]);
   const [activeMessage, setActiveMessage ] =  React.useState({});
-
+  const [active, setActive] = React.useState(false)
+  // const [msg_selected, setMsg_selected] = React.useState([]);
+  const isAllSelected = messages.length > 0 && selected.length === messages.length;
 
   const handleToggle = (value) => () => {
-    const currentIndex = checked.indexOf(value);
-    const newChecked = [...checked];
+    console.log(value, 'xxx')
+    const currentIndex = selected.indexOf(value);
+    const newChecked = [...selected];
 
     if (currentIndex === -1) {
       newChecked.push(value);
     } else {
       newChecked.splice(currentIndex, 1);
     }
-
-    setChecked(newChecked);
+    setSelected(newChecked);
   };
 
   const handleClick = (msg) => {
-    setSelected(true);
+    setActive(true);
     setActiveMessage(msg);
   }
 
   const handleBack = () => {
-    setSelected(false);
+    setActive(false);
     setActiveMessage({});
   }
 
+  const handleSelectAll = (event) => {
+    const value = event.target.value;
+
+    console.log('value', value)
+    const allMessages = [];
+    
+    messages.map((m, index) => {
+      return allMessages.push(index);
+    });
+    
+    console.log(allMessages)
+    if (value[value.length - 1] === "all") {
+      setSelected(selected.length === messages.length ? [] : allMessages );
+      return;
+    }
+    setSelected(allMessages);
+  };
+
+
   const renderMessageList = () => {
-    return <div>
+    return <>
+      <Checkbox
+        edge="start"
+        tabIndex={-1}
+        inputProps={{ 'aria-labelledby': 'select-all' }}
+        checked={isAllSelected}
+        indeterminate={
+            selected.length > 0 && selected.length < messages.length
+          }
+        onClick={handleSelectAll}
+        value="all"
+      />
+
       <List sx={{ width: '100%', maxWidth: 'xl', bgcolor: 'background.paper' }}>
       {messages.map((msg, index) => {
-        const labelId = `checkbox-list-label-${msg.title}`;
         return (
           <ListItem
             key={index}
@@ -61,17 +93,15 @@ function MessageList(props) {
               <ListItemIcon>
                 <Checkbox
                   edge="start"
-                  tabIndex={-1}
-                  disableRipple
+                  checked={selected.indexOf(index) > -1}
                   onClick={handleToggle(index)}
-                  inputProps={{ 'aria-labelledby': labelId }}
                 />
               </ListItemIcon>
               <ListItemText
-              sx={{ maxWidth: '10%' }}>{msg.sender}</ListItemText>
+              sx={{ maxWidth: '10%' }}>{msg.receiver}</ListItemText>
               <ListItemText
               onClick={ () => handleClick(msg) }
-              id={labelId} primary={msg.title}
+              primary={msg.title}
               />
             </ListItemButton>
           </ListItem>
@@ -88,14 +118,14 @@ function MessageList(props) {
         No messages
       </Box>
     }
-  </div> 
+  </> 
   }
 
 
   return (
     <React.Fragment>      
-    <MessageToolbar handleBack={handleBack}/>
-    { !selected ?
+    <MessageToolbar handleBack={handleBack} selected={active}/>
+    { !active ?
       renderMessageList()
     :
     <Message msgId={activeMessage.id}></Message>
