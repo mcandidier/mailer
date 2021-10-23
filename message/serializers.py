@@ -23,6 +23,10 @@ class MessageSerializer(serializers.ModelSerializer):
     """
     recipients = serializers.ListField(child=serializers.CharField(), write_only=True)
     sender = serializers.SerializerMethodField(read_only=True)
+    receiver = serializers.SerializerMethodField(read_only=True)
+
+    def get_receiver(self, obj):
+        return obj.sender.username
 
     def get_sender(self, obj):
         return obj.sender.id
@@ -32,7 +36,7 @@ class MessageSerializer(serializers.ModelSerializer):
         fields = ['id', 'title',
                 'message', 'status', 'recipients',
                 'recipient', 'archived','sender', 
-                'timestamp', 'parent', 'status']
+                'timestamp', 'parent', 'status', 'receiver']
         read_only_fields = ['sender', 'recipient', 'timestamp']
 
     def create(self, validate_data):

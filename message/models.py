@@ -25,6 +25,8 @@ class Message(models.Model):
     parent = models.ForeignKey('self', blank=True, null=True, related_name='replies', on_delete=models.CASCADE)
 
     # category = models.ForeignKey('Category', on_delete=models.CASCADE)
+    # class Meta:
+    #     ordering = ('-timestamp',)
 
     def __str__(self):
         return f'{self.title} - {self.sender}'

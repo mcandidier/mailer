@@ -149,7 +149,7 @@ class InboxViewSet(viewsets.ViewSet):
         if params == 'inbox' or params == '':
             qs = self.request.user.inbox.filter(parent__isnull=True).distinct()
             sent_msgs = self.request.user.messages.filter(replies__isnull=False)
-            qs = qs.union(sent_msgs)
+            qs = qs.union(sent_msgs).order_by('-timestamp')
         elif params == 'draft':
             qs = Message.objects.filter(status=1, sender=self.request.user, parent__isnull=True)
         elif params == 'sent':
