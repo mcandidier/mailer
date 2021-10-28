@@ -23,6 +23,7 @@ function ReplyForm(props) {
     const onSubmit = (values) => {
         let data = values;
         data['parent'] = message.id;
+        data['title'] = message.title;
         data['recipients'] = [message.sender];
         // data['recipients'] = recipient.split(',').map(Number);
         handleSendMessage(data, '', successCallback);
@@ -38,14 +39,6 @@ function ReplyForm(props) {
                 </span>
             </div>
             <form onSubmit={handleSubmit(onSubmit)} noValidate>
-                <Field
-                    component={Form.renderTextField}
-                    validate={[Form.required]}
-                    name="title"
-                    label="title"
-                    type="text"
-                    variant="standard"
-                />
                 <Field
                     component={Form.renderTextField}
                     validate={[Form.required]}

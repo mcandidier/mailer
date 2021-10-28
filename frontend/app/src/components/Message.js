@@ -57,7 +57,7 @@ const Message = (props) => {
                                     {msg.sender}
                                 </Avatar>
                                 }
-                                title={msg.title}
+                                title={msg.message}
                             />
                         </Card>
                 </Grid>

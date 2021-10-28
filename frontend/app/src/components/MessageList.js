@@ -18,15 +18,12 @@ import Box from '@mui/material/Box';
 function MessageList(props) {
   const { messages } = props;
 
-  // const [checked, setChecked] = React.useState([0]);
   const [selected, setSelected] = React.useState([]);
   const [activeMessage, setActiveMessage ] =  React.useState({});
   const [active, setActive] = React.useState(false)
-  // const [msg_selected, setMsg_selected] = React.useState([]);
   const isAllSelected = messages.length > 0 && selected.length === messages.length;
 
   const handleToggle = (value) => () => {
-    console.log(value, 'xxx')
     const currentIndex = selected.indexOf(value);
     const newChecked = [...selected];
 
@@ -50,15 +47,12 @@ function MessageList(props) {
 
   const handleSelectAll = (event) => {
     const value = event.target.value;
-
-    console.log('value', value)
     const allMessages = [];
     
     messages.map((m, index) => {
       return allMessages.push(index);
     });
     
-    console.log(allMessages)
     if (value[value.length - 1] === "all") {
       setSelected(selected.length === messages.length ? [] : allMessages );
       return;
