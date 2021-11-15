@@ -5,27 +5,47 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import { Divider } from '@mui/material';
 import Checkbox from '@mui/material/Checkbox';
+import ArchiveIcon from '@mui/icons-material/Archive';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 
-function MessageToolbar({handleBack, selected, selectAll}) {
+function MessageToolbar({options}) {
+    const { back, isAllSelected, messages,
+            selected, handleSelectAll, active,
+            handleArchive, handleDelete   
+        } = options;
 
-    const handleSelectAll = () => {
-        console.log('select all');
-    }
+    console.log(selected, 'selected');
 
     const listToolbar = () => {
         return (
             <React.Fragment>
-            <Checkbox
-                edge="start"
-                tabIndex={-1}
-                inputProps={{ 'aria-labelledby': 'select-all' }}
-                onClick={handleSelectAll}
-            />
+                <Checkbox
+                    edge="start"
+                    tabIndex={-1}
+                    inputProps={{ 'aria-labelledby': 'select-all' }}
+                    checked={isAllSelected}
+                    indeterminate={
+                        selected.length > 0 && selected.length < messages.length
+                        }
+                    onClick={handleSelectAll}
+                    value="all"
+                />
 
-            <IconButton aria-label="back">
-                <RefreshIcon />
-            </IconButton>
+                { selected.length > 0 ?
+                    <>
+                        <IconButton aria-label="archive" onClick={handleArchive}>
+                            <ArchiveIcon />
+                        </IconButton>
+                        <IconButton aria-label="delete" onClick={handleDelete}>
+                            <DeleteIcon />
+                        </IconButton>
+                    </>
+                :
+                    <IconButton aria-label="back">
+                        <RefreshIcon />
+                    </IconButton>
+                }
             </React.Fragment>
         )
     }
@@ -33,7 +53,7 @@ function MessageToolbar({handleBack, selected, selectAll}) {
     const messageToolbar = () => {
         return (
             <React.Fragment>
-                <IconButton aria-label="back" onClick={ () => handleBack() }>
+                <IconButton aria-label="back" onClick={ () => back() }>
                     <ArrowBackIcon />
                 </IconButton>
             </React.Fragment>
@@ -43,7 +63,7 @@ function MessageToolbar({handleBack, selected, selectAll}) {
     return (
         <>
         <div className="app-toolbar">
-            { selected ? 
+            { active ? 
                 messageToolbar()
             :
                 listToolbar()
