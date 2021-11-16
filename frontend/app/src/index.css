@@ -30,6 +30,7 @@ code {
   width: 600px;
   height: 452px;
   background-color: #fff;
+  z-index: 999;
 }
 
 .app__reply_form .header {

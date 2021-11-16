@@ -1,7 +1,7 @@
 
 const INITIAL_STATE = {
     filter: 'inbox',
-    data: []
+    data: [],
 }
 
 export const messages = (state=INITIAL_STATE, action) => {
@@ -10,8 +10,12 @@ export const messages = (state=INITIAL_STATE, action) => {
             return Object.assign({}, state, {'filter': action.payload}); 
         case 'GET_INBOX':
             return Object.assign({}, state, {'data': action.data}); 
+        case 'SET_DRAFTS':
+            return Object.assign({}, state, {'draft': action.data}); 
+        case 'SET_SENT':
+            console.log('entering sent action');
+            return Object.assign({}, state, {'sent': action.payload}); 
         case 'SEND_MESSAGE':
-            console.log(action)
             return { // returning a copy of orignal state 
                 ...state, //copying the original state
                 data: [...state.data, action.data] //new todos array 

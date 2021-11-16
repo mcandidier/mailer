@@ -1,25 +1,31 @@
-import * as React from 'react';
+import React, { useEffect } from 'react';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Checkbox from '@mui/material/Checkbox';
-import { getUserInbox } from '../redux/message/actions';
+import { getUserMessages } from '../redux/message/actions';
 import {connect, useDispatch} from 'react-redux';
 import { Message } from '../components';
 import MessageToolbar from './Toolbar';
 import Box from '@mui/material/Box';
 
-function MessageList(props) {
-  const { messages } = props;
+import { useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
+function MessageList(props) {
+  const { messages, filter } = props;
   const [selected, setSelected] = React.useState([]);
   const [activeMessage, setActiveMessage ] =  React.useState({});
   const [active, setActive] = React.useState(false)
   const isAllSelected = messages.length > 0 && selected.length === messages.length;
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    dispatch(getUserMessages(filter));
+  },[dispatch, filter]);
+  
   const handleToggle = (value) => () => {
     const currentIndex = selected.indexOf(value);
     const newChecked = [...selected];
@@ -65,8 +71,6 @@ function MessageList(props) {
       selected.forEach(index => {
         messages.splice(index, 1);
       });
-      console.log(messages, 'm')
-      dispatch({type:'GET_INBOX', data: messages});
   };
 
   //  const handleArchive = messages.filter((item, i) => {
@@ -150,13 +154,14 @@ function MessageList(props) {
 
 
 const mapStateToProps = (state, ownProps) => {
-  const messages = state.messages.data;
+  const {filter } =  state.messages;
+  const messages =  state.messages.data;
   return {
-      messages
+      messages,
+      filter
   }
 }
-const mapDispatchToProps = (dispatch, ownProps) => {
-  dispatch(getUserInbox('inbox'));
+const mapDispatchToProps = (dispatch, ownProps, x) => {
   return {
   }
 }

@@ -1,7 +1,7 @@
 import API from '../../api';
 
 
-export const getUserInbox = (filter) => {
+export const getUserMessages = (filter) => {
     return async (dispatch) => {
          const response = await API.get(`messages/inbox/?filter=${filter}`);
          const { data } = response;
@@ -49,7 +49,7 @@ export const getTrashMessages = () => {
 
 export const setFilter = (filter) => {
     return async (dispatch) => {
-        dispatch(getUserInbox(filter));
+        dispatch({'type': 'SET_FILTER', payload: filter});
     }
 }
 

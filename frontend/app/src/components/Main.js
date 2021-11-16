@@ -41,7 +41,6 @@ function Main({component}) {
     setToggleForm(!toggleForm)
   }
 
-
   return (
     <ThemeProvider theme={mdTheme}>
       <Box sx={{ display: 'flex' }}>
@@ -50,7 +49,6 @@ function Main({component}) {
         {toggleForm && 
           <MessageForm toggle={toggleMessageForm}/>
         }
-
 
         <Sidebar toggle={toggleMessageForm} />
         <Box
