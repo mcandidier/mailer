@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -16,14 +16,17 @@ import { useSelector } from 'react-redux';
 
 function MessageList(props) {
   const { messages, filter } = props;
-  const [selected, setSelected] = React.useState([]);
-  const [activeMessage, setActiveMessage ] =  React.useState({});
-  const [active, setActive] = React.useState(false)
+  const [selected, setSelected] = useState([]);
+  const [activeMessage, setActiveMessage ] =  useState({});
+  const [active, setActive] = useState(false)
   const isAllSelected = messages.length > 0 && selected.length === messages.length;
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getUserMessages(filter));
+    if(selected.length) {
+      setSelected([])
+    }
   },[dispatch, filter]);
   
   const handleToggle = (value) => () => {
