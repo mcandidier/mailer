@@ -5,7 +5,6 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Checkbox from '@mui/material/Checkbox';
-import { getUserMessages } from '../redux/message/actions';
 import {connect, useDispatch} from 'react-redux';
 import { Message } from '../components';
 import MessageToolbar from './Toolbar';
@@ -14,8 +13,11 @@ import Box from '@mui/material/Box';
 import { useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
+import { getUserMessages, handleArchiveMessage } from '../redux/message/actions';
+
+
 function MessageList(props) {
-  const { messages, filter } = props;
+  const { messages, filter, handleArchiveMessage } = props;
   const [selected, setSelected] = useState([]);
   const [activeMessage, setActiveMessage ] =  useState({});
   const [active, setActive] = useState(false)
@@ -94,7 +96,8 @@ function MessageList(props) {
 
   const handleDelete = () => {
     selected.forEach(index => {
-      const msg = messages[index]
+      const msg = messages[index];
+      dispatch(handleArchiveMessage(msg.id));
       dispatch({type:'REMOVE_MESSAGE', payload: msg});
       resetSelection();
     });
@@ -173,8 +176,9 @@ const mapStateToProps = (state, ownProps) => {
       filter
   }
 }
-const mapDispatchToProps = (dispatch, ownProps, x) => {
+const mapDispatchToProps = (dispatch, ownProps) => {
   return {
+    handleArchiveMessage,
   }
 }
 

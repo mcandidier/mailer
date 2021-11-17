@@ -53,3 +53,9 @@ export const setFilter = (filter) => {
     }
 }
 
+export const handleArchiveMessage = (msgId) => {
+    console.log('archive message', msgId);
+    return async (dispatch) => {
+        return await API.post(`messages/${msgId}/`);
+    }
+}

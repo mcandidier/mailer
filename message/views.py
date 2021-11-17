@@ -107,12 +107,18 @@ class MessageDetailViewSet(viewsets.ViewSet):
 
     def delete_message(self, *args, **kwargs):
         # delete selected message
-        message_id = kwargs.get('id')
-        message = Message.objects.get(id=message_id, sender=self.request.user)
-        if 'delete' in self.request.data.get('action'):
-            serializer = self.serializer_class(message)
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response({}, status=status.HTTP_400_BAD_REQUEST)
+        msg_id = kwargs.get('id')
+        try:
+            msg = MessageRecipient.objects.get(message__id=msg_id, user=self.request.user)
+            msg.archive = True
+            msg.save()
+            return Response({'msg': 'success'}, status=status.HTTP_200_OK)
+        except MessageRecipient.DoesNotExist:
+            message = Message.objects.get(id=msg_id, sender=self.request.user)
+            message.archived = True
+            message.save()
+            return Response(status=status.HTTP_200_OK)
+
     
     def post(self, args, **kwargs):
         # reply to message
@@ -147,11 +153,11 @@ class InboxViewSet(viewsets.ViewSet):
     def inbox_list(self, *args, **kwargs):
         params = self.request.GET.get('filter')
         if params == 'inbox' or params == '':
-            qs = self.request.user.inbox.filter(parent__isnull=True).distinct()
-            sent_msgs = self.request.user.messages.filter(replies__isnull=False)
+            qs = self.request.user.inbox.filter(parent__isnull=True, messagerecipient__archive=False).distinct()
+            sent_msgs = self.request.user.messages.filter(replies__isnull=False, messagerecipient__archive=False, archived=False)
             qs = qs.union(sent_msgs).order_by('-timestamp')
         elif params == 'draft':
-            qs = Message.objects.filter(status=1, sender=self.request.user, parent__isnull=True)
+            qs = Message.objects.filter(status=1, sender=self.request.user, parent__isnull=True, archived=False)
         elif params == 'sent':
             qs = self.request.user.messages.filter(archived=False)
         serializer = self.serializer_class(qs, many=True)
@@ -161,7 +167,6 @@ class InboxViewSet(viewsets.ViewSet):
 class TrashAPIview(generics.GenericAPIView):
     """ Retrieve trash objects
     """
-
     serializer_class = MessageRecipientSerializer
 
     def get(self, *args, **kwargs):

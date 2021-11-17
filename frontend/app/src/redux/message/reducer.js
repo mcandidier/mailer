@@ -13,7 +13,6 @@ export const messages = (state=INITIAL_STATE, action) => {
         case 'SET_DRAFTS':
             return Object.assign({}, state, {'draft': action.data}); 
         case 'SET_SENT':
-            console.log('entering sent action');
             return Object.assign({}, state, {'sent': action.payload}); 
         case 'SEND_MESSAGE':
             return { // returning a copy of orignal state 

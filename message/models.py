@@ -36,7 +36,7 @@ class Message(models.Model):
         return Message.objects.filter(parent=self).exists()
 
     @property
-    def is_parent(self, *args, **kwargs):
+    def has_parent(self, *args, **kwargs):
         return True if self.parent else False
 
     def is_seen(self, *args, **kwargs):
