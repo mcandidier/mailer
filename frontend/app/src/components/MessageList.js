@@ -87,8 +87,17 @@ function MessageList(props) {
   //   messages.splice(selected, selected.length)
   // }
 
+  const resetSelection = () => {
+    // reset selected messages
+    setSelected([]);
+  }
+
   const handleDelete = () => {
-    console.log('handleDelete');
+    selected.forEach(index => {
+      const msg = messages[index]
+      dispatch({type:'REMOVE_MESSAGE', payload: msg});
+      resetSelection();
+    });
   }
 
   const renderMessageList = () => {

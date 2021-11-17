@@ -20,6 +20,11 @@ export const messages = (state=INITIAL_STATE, action) => {
                 ...state, //copying the original state
                 data: [...state.data, action.data] //new todos array 
                } 
+        case 'REMOVE_MESSAGE':
+            return {
+                ...state,
+                data: state.data.filter((item) => item !== action.payload)
+              };
         default:
             return state;
     }
