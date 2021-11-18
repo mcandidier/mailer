@@ -103,6 +103,10 @@ function MessageList(props) {
     });
   }
 
+  const handleRefresh = () => {
+    dispatch(getUserMessages(filter));
+  }
+
   const renderMessageList = () => {
     return <>
       <List sx={{ width: '100%', maxWidth: 'xl', bgcolor: 'background.paper' }}>
@@ -151,8 +155,8 @@ function MessageList(props) {
     messages: messages,
     selected: selected,
     active: active,
-    handleArchive,
-    handleDelete
+    handleDelete,
+    handleRefresh
   }
 
   return (

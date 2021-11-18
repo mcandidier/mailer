@@ -5,14 +5,13 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import { Divider } from '@mui/material';
 import Checkbox from '@mui/material/Checkbox';
-import ArchiveIcon from '@mui/icons-material/Archive';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 
 function MessageToolbar({options}) {
     const { back, isAllSelected, messages,
             selected, handleSelectAll, active,
-            handleArchive, handleDelete   
+            handleDelete, handleRefresh
         } = options;
 
     console.log(selected, 'selected');
@@ -34,15 +33,12 @@ function MessageToolbar({options}) {
 
                 { selected.length > 0 ?
                     <>
-                        <IconButton aria-label="archive" onClick={handleArchive}>
-                            <ArchiveIcon />
-                        </IconButton>
                         <IconButton aria-label="delete" onClick={handleDelete}>
                             <DeleteIcon />
                         </IconButton>
                     </>
                 :
-                    <IconButton aria-label="back">
+                    <IconButton aria-label="back" onClick={handleRefresh}>
                         <RefreshIcon />
                     </IconButton>
                 }
