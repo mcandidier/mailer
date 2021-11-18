@@ -167,12 +167,15 @@ class InboxViewSet(viewsets.ViewSet):
 class TrashAPIview(generics.GenericAPIView):
     """ Retrieve trash objects
     """
-    serializer_class = MessageRecipientSerializer
+    serializer_class = MessageSerializer
 
     def get(self, *args, **kwargs):
-        messages = MessageRecipient.objects.filter(
+        msg_ids = MessageRecipient.objects.filter(
             user=self.request.user,
             archive=True
-        )
-        serializer = self.serializer_class(messages, many=True)
+        ).values_list('message__pk')
+        sent = Message.objects.filter(id__in=msg_ids)
+        qs = Message.objects.filter(sender=self.request.user, archived=True)
+        qs = qs.union(sent)
+        serializer = self.serializer_class(qs, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)

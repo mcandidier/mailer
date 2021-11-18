@@ -14,9 +14,9 @@ export const handleSendMessage = (data, type='', successCallback) => {
         return API.post('messages/', data).then( resp => {
             const { data } = resp;
             if(type === 'new') {
-                dispatch({'type': 'SEND_MESSAGE', data });
                 successCallback();
             } else {
+                dispatch({'type': 'SEND_MESSAGE', data });
                 successCallback(data);
             }
         });

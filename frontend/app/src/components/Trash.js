@@ -18,8 +18,8 @@ function Trash(props) {
     return (
         <React.Fragment>
         <div>
-            { trash.map((obj, i) => {
-                return <p key={i}>{obj.message.title}</p>
+            { trash.map((msg, i) => {
+                return <p key={i}>{msg.title}</p>
             })
             }
             </div>

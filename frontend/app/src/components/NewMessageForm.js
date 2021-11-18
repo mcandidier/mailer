@@ -11,17 +11,15 @@ import { handleSendMessage } from '../redux/message/actions';
 function MessageForm(props) {
     const {handleSubmit, handleSendMessage, toggle, reset } = props;
     
-
     const successCallback = (data) => {
       reset();
     }
-
 
     const onSubmit = (values) => {
         let data = values;
         // data['parent'] = message.id;
         data['recipients'] = data.recipient.split(',').map(Number);
-        handleSendMessage(data, 'new',successCallback);
+        handleSendMessage(data, 'new', successCallback);
     }
 
     return (
