@@ -1,5 +1,7 @@
 import React from 'react';
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
+import { makeStyles } from '@mui/styles';
+
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiDrawer from '@mui/material/Drawer';
 import Box from '@mui/material/Box';
@@ -19,7 +21,6 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import { mainListItems } from './ListItems';
 import { connect } from 'react-redux';
 
-import { MessageList } from '../components'; 
 
 const drawerWidth = 240;
 
@@ -82,9 +83,18 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 );
 
 
+const useStyles = makeStyles(theme => ({
+    buttonText: {
+      [theme.breakpoints.down("md")]: {
+        display: "none"
+      }
+    }
+  }));
+
+
 function Sidebar({user, toggle}) {
     const [open, setOpen] = React.useState(true);
-    const drawerWidth = 240;
+    const classes = useStyles();
     const toggleDrawer = () => {
       setOpen(!open);
     };
@@ -145,7 +155,7 @@ function Sidebar({user, toggle}) {
             variant="outlined"
             onClick={toggle}
             startIcon={<AddIcon />}>
-            <span className='text'>Compose</span>
+            <span className='text' className={classes.buttonText}>Compose</span>
           </Button>
 
           <List>{mainListItems}</List>
