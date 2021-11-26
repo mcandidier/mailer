@@ -42,9 +42,9 @@ class MessageSerializer(serializers.ModelSerializer):
     def create(self, validate_data):
         recipients = validate_data.pop('recipients')
         message = Message.objects.create(**validate_data)
-        for user_id in recipients:
+        for email in recipients:
             try: 
-                user = User.objects.get(id=user_id)
+                user = User.objects.get(email=email)
                 message.recipient.add(user)
             except User.DoesNotExist:
                 pass

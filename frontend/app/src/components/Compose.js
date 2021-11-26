@@ -15,10 +15,22 @@ function MessageForm(props) {
       reset();
     }
 
+    const validateEmail = (email) => {
+        var re = /\S+@\S+\.\S+/;
+        return re.test(email);
+    }
+
+
     const onSubmit = (values) => {
         let data = values;
-        // data['parent'] = message.id;
-        data['recipients'] = data.recipient.split(',').map(Number);
+        const recipients = [];
+        data.recipient.split(',').map( item => {
+            if(validateEmail(item)) {
+                recipients.push(item);
+            }
+            return item;
+        })
+        data['recipients'] = recipients;
         handleSendMessage(data, 'new', successCallback);
     }
 
