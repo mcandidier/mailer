@@ -108,26 +108,29 @@ class MessageDetailViewSet(viewsets.ViewSet):
     def delete_message(self, *args, **kwargs):
         # delete selected message
         msg_id = kwargs.get('id')
-        try:
-            msg = MessageRecipient.objects.get(message__id=msg_id, user=self.request.user)
-            msg.archive = True
-            msg.save()
-            return Response({'msg': 'success'}, status=status.HTTP_200_OK)
-        except MessageRecipient.DoesNotExist:
+        if self.request.data.get('ref') == 'sent':
             message = Message.objects.get(id=msg_id, sender=self.request.user)
             message.archived = True
             message.save()
             return Response(status=status.HTTP_200_OK)
+        else:
+            try:
+                msg = MessageRecipient.objects.get(message__id=msg_id, user=self.request.user)
+                msg.archive = True
+                msg.save()
+                return Response({'msg': 'success'}, status=status.HTTP_200_OK)
+            except MessageRecipient.DoesNotExist:
+                return Response(status=status.HTTP_400_BAD_REQUEST)
 
-    
-    def post(self, args, **kwargs):
-        # reply to message
-        message_id = kwargs.get('id')
-        message = Message.objects.get(id=message_id)
-        serializer = self.serializer_class(data=self.request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    # def post(self, args, **kwargs):
+    #     # reply to message
+    #     message_id = kwargs.get('id')
+    #     message = Message.objects.get(id=message_id)
+    #     serializer = self.serializer_class(data=self.request.data)
+    #     serializer.is_valid(raise_exception=True)
+    #     serializer.save()
+    #     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class MessageReplyViewSet(generics.GenericAPIView):
@@ -160,6 +163,7 @@ class InboxViewSet(viewsets.ViewSet):
             qs = Message.objects.filter(status=1, sender=self.request.user, parent__isnull=True, archived=False)
         elif params == 'sent':
             qs = self.request.user.messages.filter(archived=False)
+            print(len(qs))
         serializer = self.serializer_class(qs, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 

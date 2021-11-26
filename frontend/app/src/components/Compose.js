@@ -9,6 +9,7 @@ import { handleSendMessage } from '../redux/message/actions';
 
 
 function MessageForm(props) {
+    // TODO: display email validation to form.
     const {handleSubmit, handleSendMessage, toggle, reset } = props;
     
     const successCallback = (data) => {

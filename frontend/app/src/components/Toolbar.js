@@ -1,4 +1,5 @@
-import React from 'react'
+import React from 'react';
+import { connect } from 'react-redux';
 
 import { IconButton } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -70,4 +71,4 @@ function MessageToolbar({options}) {
     )
 }
 
-export default MessageToolbar;
+export default connect()(MessageToolbar);

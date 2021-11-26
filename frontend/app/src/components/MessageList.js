@@ -13,7 +13,7 @@ import Box from '@mui/material/Box';
 import { useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
-import { getUserMessages, handleArchiveMessage } from '../redux/message/actions';
+import { getUserMessages, handleArchiveMessage, setFilter } from '../redux/message/actions';
 
 
 function MessageList(props) {
@@ -72,11 +72,6 @@ function MessageList(props) {
   };
 
 
-  const handleArchive = () => {
-      selected.forEach(index => {
-        messages.splice(index, 1);
-      });
-  };
 
   //  const handleArchive = messages.filter((item, i) => {
   //   messages.splice(i, 1)
@@ -97,7 +92,7 @@ function MessageList(props) {
   const handleDelete = () => {
     selected.forEach(index => {
       const msg = messages[index];
-      dispatch(handleArchiveMessage(msg.id));
+      dispatch(handleArchiveMessage(msg.id, filter));
       dispatch({type:'REMOVE_MESSAGE', payload: msg});
       resetSelection();
     });
@@ -155,7 +150,7 @@ function MessageList(props) {
     messages: messages,
     selected: selected,
     active: active,
-    handleDelete,
+    handleDelete: handleDelete,
     handleRefresh
   }
 
@@ -182,7 +177,7 @@ const mapStateToProps = (state, ownProps) => {
 }
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    handleArchiveMessage,
+    handleArchiveMessage
   }
 }
 
